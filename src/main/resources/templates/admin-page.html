@@ -1,0 +1,74 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="main_layout.html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div layout:fragment="main_page">
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>EMAIL</th>
+            <th>PASSWORD</th>
+            <th>NAME</th>
+            <th style="width: 10%;">BAN/UNBAN</th>
+        </tr>
+        </thead>
+        <tbody id="movieListBody">
+        </tbody>
+    </table>
+    <script>
+        loadUsers();
+
+        function loadUsers() {
+
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("GET", "/user", true);
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
+
+
+                    let parse = JSON.parse(httpRequest.responseText);
+
+                    for (let i = 0; i < parse.length; i++) {
+                        console.log(parse[i].email + " " + parse[i].password + " " + parse[i].fullName)
+                    }
+                    console.log(parse);
+                    let tableContent = "";
+                    for (let i = 0; i < parse.length; i++) {
+                        tableContent += "<tr>";
+                        tableContent += "<td>" + parse[i].email + "</td>";
+                        tableContent += "<td>" + parse[i].password + "</td>";
+                        tableContent += "<td>" + parse[i].fullName + "</td>";
+                        if(parse[i].enabled){
+                            tableContent += "<td><button class='btn btn-danger btn-sm' onclick='deleteUser(\"" + parse[i].email + "\")'>BAN</button></td>";
+                        }else {
+                            tableContent += "<td><button class='btn btn-primary btn-sm' onclick='deleteUser(\"" + parse[i].email + "\")'>UNBAN</button></td>";
+                        }
+                        tableContent += "</tr>";
+                    }
+                    document.getElementById("movieListBody").innerHTML = tableContent;
+                }
+            };
+            httpRequest.send();
+        }
+
+        function deleteUser(email) {
+            let approve = confirm("Are you sure?");
+
+            if (approve) {
+
+                const httpRequest = new XMLHttpRequest();
+                httpRequest.open("DELETE", "/user", true);
+                httpRequest.setRequestHeader("Content-Type", "application/json");
+
+                httpRequest.onreadystatechange = function () {
+                    if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
+                        loadUsers();
+                    }
+                }
+                httpRequest.send(email);
+            }
+        }
+
+    </script>
+</div>
+</html>

@@ -1,0 +1,183 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="main_layout.html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div layout:fragment="main_page">
+
+    <h1 class="text-center" th:text="${movie.name}"></h1>
+    <input type="hidden" id="movieId" th:value="${movie.id}">
+    <input th:if="${#authentication.principal}!=anonymousUser" type="hidden" id="userId"
+           th:value="${#authentication.principal.email}">
+
+    <div class="row">
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-0 border" style="background-color: #f0f2f5;">
+                <div class="card-body p-4">
+                    <div th:if="${#authentication.principal}!=anonymousUser" class="form-outline mb-4">
+                        <input type="text" id="addANote" class="form-control" placeholder="Type comment..."/>
+                        <button class="btn btn-sm" onclick="addFeedBack()">+ Add a note</button>
+                    </div>
+                    <div id="feedBackListBody">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8 col-lg-6">
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Accordion Item #1
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                            Accordion Item #2
+                        </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the second item's accordion body. Let's imagine this being filled with some actual content.</div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                            Accordion Item #3
+                        </button>
+                    </h2>
+                    <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the third item's accordion body. Nothing more exciting happening here in terms of content, but just filling up the space to make it look, at least at first glance, a bit more representative of how this would look in a real-world application.</div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <h4 class="text-center"> Actors: </h4>
+
+    <div class="d-flex" id="actorsListBody" style="flex-wrap: wrap"></div>
+
+    <script type="text/javascript">
+        loadFeedbacks();
+        loadActors();
+        // loadNominations();
+
+        function loadFeedbacks() {
+
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("GET", "/feed-back/" + movieId.value, true);
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
+
+                    let parse = JSON.parse(httpRequest.responseText);
+                    let tableContent = "";
+                    for (let i = 0; i < parse.length; i++) {
+                        tableContent += "<div class=\"card mb-4\">\n";
+                        tableContent += "<div class=\"card-body\">\n";
+                        tableContent += "<p>" + parse[i].comment + "</p>\n";
+                        tableContent += "<div class=\"d-flex justify-content-between\">\n";
+                        tableContent += "<div class=\"d-flex flex-row align-items-center\">\n";
+                        tableContent += "<img src=\"/images/user.png\" alt=\"avatar\" width=\"25\" height=\"25\" />\n";
+                        tableContent += "<p class=\"small mb-0 ms-2\">" + parse[i].user.fullName + "</p>\n";
+                        tableContent += "</div>\n</div>\n</div>\n</div>";
+                    }
+                    document.getElementById("feedBackListBody").innerHTML = tableContent;
+                }
+            };
+            httpRequest.send();
+        }
+        function loadActors() {
+
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("GET", "/actor/byMovie/" + movieId.value, true);
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
+
+                    let parse = JSON.parse(httpRequest.responseText);
+                    console.log(parse);
+                    let tableContent = "";
+                    for (let i = 0; i < parse.length; i++) {
+                        tableContent += "<div class=\"card mx-2 mt-2\" style=\"width: 18rem;\">\n";
+                        tableContent += "<div class=\"card-body\">\n";
+                        tableContent += "<h5 class=\"card-title\">" + parse[i].name + "</h5>\n";
+                        tableContent += "<p class=\"card-text\"> Date of birth: " + parse[i].dateOfBirth + "</p>\n";
+                        tableContent += "<p class=\"text2\">Country: " + parse[i].country + "</p>\n";
+                        tableContent += "</div></div>";
+                    }
+                    document.getElementById("actorsListBody").innerHTML = tableContent;
+                }
+            };
+            httpRequest.send();
+        }
+        function loadNominations() {
+
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("GET", "/actor/byMovie/" + movieId.value, true);
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
+
+                    let parse = JSON.parse(httpRequest.responseText);
+                    console.log(parse);
+                    let tableContent = "";
+                    const awards = [];
+                    for (let i = 0; i < parse.length; i++) {
+                        if (!(awards.includes(parse[i].awards.id))){
+                            awards.push((parse[i].awards.id));
+                        }
+                    }
+                    console.log(awards);
+                    for (let i = 0; i < awards.length; i++) {
+                        tableContent += "<div class=\"accordion-item\">\n";
+                        tableContent += "<h2 class=\"accordion-header\">\n";
+                        tableContent += "<button class=\"accordion-button collapsed\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#flush-collapseOne\" aria-expanded=\"false\" aria-controls=\"flush-collapseOne\">\n";
+                        tableContent +=  awards[i] + "\n</button>\n</h2>\n";
+                        tableContent += "<div id=\"flush-collapseOne\" class=\"accordion-collapse collapse\" data-bs-parent=\"#accordionFlushExample\">\n";
+                        tableContent += "<div class=\"accordion-body\">";
+                        tableContent += "aiosdhfoaihdsoiahsdiohadsiohaiosfhoiasfho";
+                        tableContent += "</div>\n</div>\n </div>";
+                    }
+                    document.getElementById("actorsListBody").innerHTML = tableContent;
+                }
+            };
+            httpRequest.send();
+        }
+
+
+        function addFeedBack() {
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("POST", "/feed-back", true);
+            httpRequest.setRequestHeader("Content-Type", "application/json");
+
+
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
+                    addANote.value = "";
+                    loadFeedbacks();
+                }
+            };
+            let body = {
+                'comment': addANote.value,
+                'movie': {
+                    'id': movieId.value
+                }
+            };
+
+            body = JSON.stringify(body);
+
+            httpRequest.send(body);
+        }
+    </script>
+
+</div>
+</html>

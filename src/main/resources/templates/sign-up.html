@@ -1,0 +1,73 @@
+</html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="main_layout.html">
+<div layout:fragment="main_page">
+    <div class="row">
+        <div class="col-6 mx-auto">
+            <div class="alert alert-danger" role="alert" th:if="${param.passwordError!=null}">
+                This email already in use
+            </div>
+            <div class="alert alert-danger" role="alert" th:if="${param.password_same_error!=null}">
+                Passwords are not the same
+            </div>
+            <div class="alert alert-success" role="alert" th:if="${param.success!=null}">
+                Registered Successfully
+            </div>
+            <form action="/sign-up-page" method="post">
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>FULL NAME: </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <input type="text" class="form-control" name="fullName">
+                    </div>
+                </div>
+
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>EMAIL: </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <input type="email" class="form-control" name="email">
+                    </div>
+                </div>
+
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>PASSWORD: </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <input type="password" class="form-control" name="password">
+                    </div>
+                </div>
+
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <label>REPEAT PASSWORD: </label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <input type="password" class="form-control" name="repeat-password">
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <button class="btn btn-success">SIGN UP</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</html>

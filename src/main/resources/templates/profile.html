@@ -1,0 +1,38 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="main_layout.html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div layout:fragment="main_page">
+
+    <h1 style="text-align: center">Личный кабинет</h1>
+    <hr>
+    <br>
+    <div style="text-align: center">
+
+        <div class="row">
+            <div class="col-6">
+                <img th:src="@{/images/avatar.png}" style="border:2px solid black; border-radius: 20px" height="120">
+                <br>
+                <br>
+                <h2><p>Welcome, <span sec:authentication="principal.username"></span>!</p>
+                </h2>
+            </div>
+            <div class="col-6">
+                <a sec:authorize="hasAnyRole('ROLE_ADMIN')" class="btn btn-success mb-3"
+                   style="text-align: center; width: 100%"
+                   th:href="@{'/admin-page'}">
+                    Панель администратора
+                </a><br>
+                <a class="btn btn-success mb-3" style="text-align: center; width: 100%"
+                   href="@{'/user-favorites'}">
+                    ♥ Favorites ♥
+                </a>
+                <form action="/sign-out" method="post">
+                    <button type="submit" style="text-align: center; width: 100%" class="btn btn-danger mb-2">
+                        Выйти из аккаунта
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

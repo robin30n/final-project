@@ -1,0 +1,249 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="main_layout.html"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div layout:fragment="main_page">
+    <input type="hidden" id="actorId">
+
+    <div className="row mb-3" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+        <div className="col-6 mx-auto">
+            <div className="row mt-3">
+                <div className="col-12">
+                    <label>NAME : </label>
+                </div>
+            </div>
+            <div className="row mt-2">
+                <div className="col-12">
+                    <input type="text" className="form-control" id="actorName">
+                </div>
+            </div>
+            <div className="row mt-3">
+                <div className="col-12">
+                    <label>COUNTRY : </label>
+                </div>
+            </div>
+            <div className="row mt-2">
+                <div className="col-12">
+                    <textarea className="form-control" id="country"></textarea>
+                </div>
+            </div>
+            <div className="row mt-3">
+                <div className="col-12">
+                    <label>DATE OF BIRTH : </label>
+                </div>
+            </div>
+            <div className="row mt-2">
+                <div className="col-12">
+                    <input type="number" className="form-control" id="dateOfBith">
+                </div>
+            </div>
+            <div className="row mt-3">
+                <div className="col-12">
+                    <button className="btn btn-success" onClick="addMovie()">ADD MOVIE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div className="row mt-3">
+        <div className="col-12">
+            <table className="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>COUNTRY</th>
+                    <th>DATE OF BIRTH</th>
+                    <th style="width: 10%;">DETAILS</th>
+                </tr>
+                </thead>
+                <tbody id="movieListBody">
+                </tbody>
+            </table>
+
+            <div className="modal fade" id="detailsModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                 tabIndex="-1"
+                 aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div className="modal-dialog">
+
+                    <div className="modal-content" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="staticBackdropLabel">Actor Details</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="row mt-3">
+                                <div className="col-12">
+                                    <label>NAME : </label>
+                                </div>
+                            </div>
+                            <div className="row mt-2">
+                                <div className="col-12">
+                                    <input type="text" className="form-control" id="actorNameDetails">
+                                </div>
+                            </div>
+                            <div className="row mt-3">
+                                <div className="col-12">
+                                    <label>COUNTRY : </label>
+                                </div>
+                            </div>
+                            <div className="row mt-2">
+                                <div className="col-12">
+                                    <textarea rows="5" className="form-control" id="countryDetails"></textarea>
+                                </div>
+                            </div>
+                            <div className="row mt-3">
+                                <div className="col-12">
+                                    <label>DATE OF BIRTH : </label>
+                                </div>
+                            </div>
+                            <div className="row mt-2">
+                                <div className="col-12">
+                                    <input type="date" className="form-control" id="dateDetails">
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-danger" onClick="deleteActor()">DELETE</button>
+                            <button type="button" className="btn btn-primary" onClick="updateActor()">SAVE</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        loadActors();
+
+        function loadActors() {
+
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("GET", "/actor", true);
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
+
+                    let parse = JSON.parse(httpRequest.responseText);
+                    console.log(parse);
+                    // for (let i = 0; i < parse.length; i++) {
+                    //     console.log(parse[i].title + " " + parse[i].description + " " + parse[i].budget )
+                    // }
+                    let tableContent = "";
+                    for (let i = 0; i < parse.length; i++) {
+                        tableContent += "<tr>";
+                        tableContent += "<td>" + parse[i].id + "</td>";
+                        tableContent += "<td>" + parse[i].name + "</td>";
+                        tableContent += "<td>" + parse[i].country + "</td>";
+                        tableContent += "<td>" + parse[i].dateOfBirth + "</td>";
+                        tableContent += "<td><button class='btn btn-primary btn-sm' onclick='openActorDetailsModal("
+                            + parse[i].id + ")'>DETAILS</button></td>";
+                        tableContent += "</tr>";
+                    }
+                    document.getElementById("movieListBody").innerHTML = tableContent;
+                }
+            };
+            httpRequest.send();
+        }
+
+        function openActorDetailsModal(id) {
+
+            detailsModal = new bootstrap.Modal(document.getElementById('detailsModal'));
+
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("GET", "/actors/" + id, true);
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
+                    let result = JSON.parse(httpRequest.responseText);
+
+                    console.log(result)
+                    actorId.value = result.id;
+                    actorNameDetails.value = result.name;
+                    countryDetails.value = result.country;
+                    dateDetails.value = result.dateOfBirth;
+
+                    detailsModal.show();
+
+                }
+            }
+            httpRequest.send();
+        }
+
+        function addActor() {
+
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("POST", "/actor", true);
+            httpRequest.setRequestHeader("Content-Type", "application/json");
+
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
+                    actorName.value = "";
+                    country.value = "";
+                    dateOfBith.value = "";
+                    loadMovie();
+                }
+            };
+            let body = {
+                'name': actorName.value,
+                'country': country.value,
+                'dateOfBirth': dateOfBith.value
+            };
+
+            body = JSON.stringify(body);
+
+            httpRequest.send(body);
+        }
+
+        function updateMovie() {
+
+            const httpRequest = new XMLHttpRequest();
+            httpRequest.open("PUT", "/actor", true);
+            httpRequest.setRequestHeader("Content-Type", "application/json");
+
+
+            httpRequest.onreadystatechange = function () {
+                if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
+                    loadMovie();
+                    detailsModal.hide();
+                }
+            };
+            let body = {
+                'id': actorId.value,
+                'name': actorNameDetails.value,
+                'description': descriptionDetails.value,
+                'budget': budgetDetails.value,
+                'boxOffice': boxOfficeDetails.value,
+                'genre': genreDetails.value,
+                'duration': durationDetails.value
+            };
+
+            body = JSON.stringify(body);
+
+            httpRequest.send(body);
+        }
+
+
+        function deleteMovie() {
+
+            let approve = confirm("Are you sure?");
+
+            if (approve) {
+
+                const httpRequest = new XMLHttpRequest();
+                httpRequest.open("DELETE", "/movie/" + movieId.value, true);
+                httpRequest.setRequestHeader("Content-Type", "application/json");
+
+                httpRequest.onreadystatechange = function () {
+                    if (httpRequest.readyState == XMLHttpRequest.DONE && httpRequest.status == 200) {
+                        detailsModal.hide();
+                        loadMovie();
+                    }
+                }
+                httpRequest.send();
+            }
+        }
+    </script>
+</div>
+</html>
