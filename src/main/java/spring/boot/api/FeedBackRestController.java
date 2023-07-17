@@ -36,7 +36,7 @@ public class FeedBackRestController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER') || hasAnyRole('ROLE_ADMIN')")
     public FeedBackDTO addFeedBack(@RequestBody FeedBackDTO feedBackDTO,
                                    Principal principal) {
         MovieDTO movieDTO = movieService.getMovie(feedBackDTO.getMovie().getId());
@@ -46,6 +46,14 @@ public class FeedBackRestController {
         feedBackDTO.setUser(user);
         feedBackDTO.setMovie(movieDTO);
 
-        return feedBackService.addFeedBack(feedBackDTO);
+            return feedBackService.addFeedBack(feedBackDTO);
     }
+
+    @DeleteMapping(value = "{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public void deleteActor(@PathVariable(name = "id") Long id){
+        feedBackService.deleteFeedBack(id);
+    }
+
+
 }

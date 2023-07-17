@@ -12,6 +12,6 @@ public class ActorsDTO {
     private String name;
     private LocalDate dateOfBirth;
     private String country;
-    private List<MovieDTO> movies;
+//    private List<MovieDTO> movies;
     private List<NominationsDTO> nominations;
 }

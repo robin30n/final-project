@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "t_movies")
@@ -30,5 +32,6 @@ public class Movie  {
     private List<Actors> actors;
     @OneToMany
     private List<Nominations> nominations;
-
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "movies")
+//    private Set<Actors> actorsSet = new HashSet<>();
 }

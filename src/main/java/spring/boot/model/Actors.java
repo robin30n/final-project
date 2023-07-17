@@ -27,4 +27,11 @@ public class Actors  {
     @OneToMany
     private List<Nominations> nominations;
 
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinTable(name = "movie_actor",
+//            joinColumns = {@JoinColumn(name = "actor_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "movie_id")})
+//    private Set<Movie> movieSet = new HashSet<>();
 }
+
+
