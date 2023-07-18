@@ -16,11 +16,15 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "email")
     private String email;
+    @Column(name = "password")
     private String password;
     @Column(name = "fullName")
     private String fullName;
+    @Column(name = "active")
     private boolean active = true;
     @ManyToMany(fetch =  FetchType.EAGER)
     private List<Permission> permissions;
