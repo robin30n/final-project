@@ -26,8 +26,8 @@ public class Actors  {
 //    private List<Movie> movies;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "movies_actors",
-            joinColumns = {@JoinColumn(name = "actor_id")},
+    @JoinTable(name = "t_movies_actors",
+            joinColumns = {@JoinColumn(name = "actors_id")},
             inverseJoinColumns = {@JoinColumn(name = "movie_id")})
     private List<Movie> movies;
 }
