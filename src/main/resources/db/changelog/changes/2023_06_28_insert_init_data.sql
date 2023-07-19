@@ -1,4 +1,4 @@
-INSERT INTO t_actors (country, dateOfBirth, name)
+INSERT INTO t_actors (country, date_of_birth, name)
 VALUES ('America', '1968-09-25', 'Will Smith'),
        ('America', '1991-08-26', 'Dylan OBrien'),
        ('America', '1990-05-16', 'Thomas Brodie-Sangster'),
@@ -42,7 +42,7 @@ VALUES
     ('ROLE_USER'),
     ('ROLE_ADMIN');
 
-INSERT INTO t_users (active, email, fullName, password)
+INSERT INTO t_users (active, email, full_name, password)
 VALUES
     (true, 'akm@gmail.com', 'Akimzhan Sharipuly', '$2a$10$/7tDLdQUhWaWUSacdJIXXuZkNcwOl9se6g6Du5wnb.ColQ3SiLrOK'),
     (true, 'akimzhan1614@gmail.com', 'Akimzhan Sharipuly', '$2a$10$qHDsO1zgxcnpcfuEsEaKQebjT4q4qt.E8fw6tjg81Wt/rxN2cPFDe'),
@@ -50,14 +50,7 @@ VALUES
 
 INSERT INTO t_users_permissions (user_id, permissions_id)
 VALUES
-    (1,1),
-    (1,2),
-    (1,3),
-    (2,1),
-    (2,2),
-    (3,1),
-    (3,3),
-    (2,3);
+    (1,3);
 
 INSERT INTO t_nominations (name, awards_id, movie_id)
 VALUES
@@ -170,7 +163,7 @@ VALUES
     (3, 1);
 
 
-INSERT INTO t_movies_actors (movie_id, actor_id)
+INSERT INTO t_movies_actors (movie_id, actors_id)
 VALUES
     (1, 2),
     (2, 3),

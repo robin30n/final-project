@@ -1,6 +1,7 @@
 package spring.boot.api;
 
 import spring.boot.dto.MovieDTO;
+import spring.boot.model.Movie;
 import spring.boot.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +20,6 @@ public class MovieRestController {
     public List<MovieDTO> getMovies() {
         return movieService.getAllMovies();
     }
-
     @GetMapping(value = "{id}")
     public MovieDTO getMovieById(@PathVariable(name = "id") Long id) {
         return movieService.getMovie(id);

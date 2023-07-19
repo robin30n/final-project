@@ -18,20 +18,26 @@ public class Actors  {
     private Long id;
     @Column(name = "name")
     private String name;
-    @Column(name = "dateOfBirth")
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
     @Column(name = "country")
     private String country;
-    @ManyToMany(mappedBy = "actors")
-    private List<Movie> movies;
-    @OneToMany
-    private List<Nominations> nominations;
+//    @ManyToMany(mappedBy = "actors")
+//    private List<Movie> movies;
 
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinTable(name = "movie_actor",
-//            joinColumns = {@JoinColumn(name = "actor_id")},
-//            inverseJoinColumns = {@JoinColumn(name = "movie_id")})
-//    private Set<Movie> movieSet = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "movies_actors",
+            joinColumns = {@JoinColumn(name = "actor_id")},
+            inverseJoinColumns = {@JoinColumn(name = "movie_id")})
+    private List<Movie> movies;
 }
 
-
+/*
+CREATE TABLE t_actors (
+                            id bigint(20) NOT NULL auto_increment,
+                            name varchar(255) DEFAULT NULL,
+                            date_of_birth date DEFAULT NULL,
+                            country varchar(255) DEFAULT NULL,
+                            PRIMARY KEY (id)
+);
+ */

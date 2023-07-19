@@ -18,7 +18,6 @@ public class MovieService {
     public List<MovieDTO> getAllMovies(){
         return movieMapper.toDTOlList(movieRepository.findAll());
     }
-
     public MovieDTO addMovie(MovieDTO movie){
         return movieMapper.toDto(movieRepository.save(movieMapper.toModel(movie)));
     }

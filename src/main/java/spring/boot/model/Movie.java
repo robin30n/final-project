@@ -15,6 +15,7 @@ import java.util.Set;
 public class Movie  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     @Column(name = "name")
     private String name;
@@ -28,10 +29,10 @@ public class Movie  {
     private String genre;
     @Column(name = "duration")
     private int duration;
-    @ManyToMany
-    private List<Actors> actors;
+//    @ManyToMany
+//    private List<Actors> actors;
     @OneToMany
     private List<Nominations> nominations;
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "movies")
-//    private Set<Actors> actorsSet = new HashSet<>();
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "movies")
+    private List<Actors> actors;
 }

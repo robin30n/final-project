@@ -1,7 +1,7 @@
 CREATE TABLE t_actors (
                             id bigint(20) NOT NULL auto_increment,
                             name varchar(255) DEFAULT NULL,
-                            dateOfBirth date DEFAULT NULL,
+                            date_of_birth date DEFAULT NULL,
                             country varchar(255) DEFAULT NULL,
                             PRIMARY KEY (id)
 );
@@ -44,7 +44,7 @@ CREATE TABLE t_users (
                            id bigint(20) auto_increment,
                            email varchar(255),
                            password varchar(255),
-                           fullName varchar(255),
+                           full_name varchar(255),
                            active tinyint(1) DEFAULT 1,
                            PRIMARY KEY (id)
 );
@@ -57,10 +57,10 @@ CREATE TABLE t_users_permissions (
                                      FOREIGN KEY (permissions_id) REFERENCES t_permission (id)
 );
 CREATE TABLE t_movies_actors (
-                                   actor_id bigint(20) NOT NULL,
+                                   actors_id bigint(20) NOT NULL,
                                    movie_id bigint(20) NOT NULL,
-                                   PRIMARY KEY (actor_id, movie_id),
-                                   FOREIGN KEY (actor_id) REFERENCES t_actors (id),
+                                   PRIMARY KEY (actors_id, movie_id),
+                                   FOREIGN KEY (actors_id) REFERENCES t_actors (id),
                                    FOREIGN KEY (movie_id) REFERENCES t_movies (id)
 );
 CREATE TABLE t_movies_nominations (

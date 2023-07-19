@@ -13,22 +13,22 @@ public class ActorsService {
     @Autowired
     private ActorsRepository actorsRepository;
     @Autowired
-    private ActorsMapper movactorsMapperieMapper;
+    private ActorsMapper actorsMapper;
 
     public List<ActorsDTO> getAllActors(){
-        return movactorsMapperieMapper.toDTOlList(actorsRepository.findAll());
+        return actorsMapper.toDTOlList(actorsRepository.findAll());
     }
 
     public ActorsDTO addActor(ActorsDTO actorsDTO){
-        return movactorsMapperieMapper.toDto(actorsRepository.save(movactorsMapperieMapper.toModel(actorsDTO)));
+        return actorsMapper.toDto(actorsRepository.save(actorsMapper.toModel(actorsDTO)));
     }
 
     public ActorsDTO getActor(Long id){
-        return movactorsMapperieMapper.toDto(actorsRepository.findById(id).orElse(null));
+        return actorsMapper.toDto(actorsRepository.findById(id).orElse(null));
     }
 
     public ActorsDTO updateActor(ActorsDTO actorsDTO){
-        return movactorsMapperieMapper.toDto(actorsRepository.save(movactorsMapperieMapper.toModel(actorsDTO)));
+        return actorsMapper.toDto(actorsRepository.save(actorsMapper.toModel(actorsDTO)));
     }
 
     public void deleteActor(Long id){
@@ -36,7 +36,7 @@ public class ActorsService {
     }
 
     public List<ActorsDTO> getAllByMovie(Long id){
-        return movactorsMapperieMapper.toDTOlList(actorsRepository.findAllByMovie(id));
+        return actorsMapper.toDTOlList(actorsRepository.findAllByMovie(id));
     }
 
 }

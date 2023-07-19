@@ -27,15 +27,15 @@
         />
     </changeSet>
 
-    <changeSet id="2023_06_28_insert_init_data_only_relations" author="ilyas.zhuanyshev">
-        <sqlFile
-                dbms="mysql"
-                encoding="UTF-8"
-                endDelimiter=";"
-                path="db/changelog/changes/2023_06_28_insert_init_data_only_relations.sql"
-                relativeToChangelogFile="false"
-                stripComments="true"
-                splitStatements="true"
-        />
-    </changeSet>
+<!--    <changeSet id="2023_06_28_insert_init_data_only_relations" author="ilyas.zhuanyshev">-->
+<!--        <sqlFile-->
+<!--                dbms="mysql"-->
+<!--                encoding="UTF-8"-->
+<!--                endDelimiter=";"-->
+<!--                path="db/changelog/changes/2023_06_28_insert_init_data_only_relations.sql"-->
+<!--                relativeToChangelogFile="false"-->
+<!--                stripComments="true"-->
+<!--                splitStatements="true"-->
+<!--        />-->
+<!--    </changeSet>-->
 </databaseChangeLog>

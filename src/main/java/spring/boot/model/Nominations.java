@@ -18,3 +18,16 @@ public class Nominations {
     private Awards awards;
 
 }
+
+
+/*
+CREATE TABLE t_nominations (
+    id bigint(20) NOT NULL auto_increment,
+    name varchar(255) DEFAULT NULL,
+    awards_id bigint(20) DEFAULT NULL,
+    movie_id bigint(20) DEFAULT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (awards_id) REFERENCES t_awards (id),
+    FOREIGN KEY (movie_id) REFERENCES t_movies (id)
+);
+ */
