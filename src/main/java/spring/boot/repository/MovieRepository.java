@@ -8,4 +8,5 @@ import spring.boot.model.Movie;
 @Repository
 @Transactional
 public interface MovieRepository extends JpaRepository<Movie, Long> {
+
 }

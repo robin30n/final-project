@@ -1,20 +1,27 @@
 package spring.boot.api;
 
+import lombok.RequiredArgsConstructor;
 import spring.boot.dto.MovieDTO;
 import spring.boot.model.Movie;
+import spring.boot.service.ActorsService;
+import spring.boot.service.FeedBackService;
 import spring.boot.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import spring.boot.service.NominationsService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/movie")
+@RequiredArgsConstructor
 public class MovieRestController {
 
-    @Autowired
-    MovieService movieService;
+    private final MovieService movieService;
+    private final FeedBackService feedBackService;
+    private final ActorsService actorsService;
+    private final NominationsService nominationsService;
 
     @GetMapping
     public List<MovieDTO> getMovies() {
@@ -37,6 +44,7 @@ public class MovieRestController {
     @DeleteMapping(value = "{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public void deleteMovie(@PathVariable(name = "id") Long id){
+        feedBackService.deleteFeedBackByMovieId(id);
          movieService.deleteMovie(id);
     }
 

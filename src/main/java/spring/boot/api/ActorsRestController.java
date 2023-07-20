@@ -37,6 +37,7 @@ public class ActorsRestController {
     @DeleteMapping(value = "{id}")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public void deleteActor(@PathVariable(name = "id") Long id){
+
          actorsService.deleteActor(id);
     }
 

@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 @Transactional
 public interface FeedBackRepository extends JpaRepository<FeedBack, Long> {
-
+    void deleteAllByMovieId(Long id);
     List<FeedBack> findAllByMovieId(Long id);
 }

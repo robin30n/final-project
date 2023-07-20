@@ -39,4 +39,9 @@ public class FeedBackService {
          feedBackRepository.deleteById(id);
     }
 
+
+    public void deleteFeedBackByMovieId(Long id){
+         feedBackRepository.deleteAllByMovieId(id);
+    }
+
 }

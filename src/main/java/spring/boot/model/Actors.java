@@ -31,13 +31,3 @@ public class Actors  {
             inverseJoinColumns = {@JoinColumn(name = "movie_id")})
     private List<Movie> movies;
 }
-
-/*
-CREATE TABLE t_actors (
-                            id bigint(20) NOT NULL auto_increment,
-                            name varchar(255) DEFAULT NULL,
-                            date_of_birth date DEFAULT NULL,
-                            country varchar(255) DEFAULT NULL,
-                            PRIMARY KEY (id)
-);
- */
